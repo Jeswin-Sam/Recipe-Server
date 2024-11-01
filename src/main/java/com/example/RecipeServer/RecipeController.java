@@ -14,7 +14,7 @@ public class RecipeController {
     RecipeService recipeService;
 
     @GetMapping("/")
-    public ArrayList<String> getIngredients(){
-        return recipeService.getIngredientsFromPython("src/main/resources/static/test_image.jpeg");
+    public ArrayList<Recipe> getIngredients(){
+        return recipeService.findPossibleRecipes("src/main/resources/static/test_image.jpeg");
     }
 }

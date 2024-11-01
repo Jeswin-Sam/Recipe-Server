@@ -6,7 +6,7 @@ def get_image_details(image_path):
     # todo
     # image processing here
 
-    mylist = ["apple", "banana", "cherry", "orange"]
+    mylist = ["apple"]
     return mylist
 
 

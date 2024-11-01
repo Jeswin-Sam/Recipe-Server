@@ -9,6 +9,18 @@ import java.util.Arrays;
 @Service
 public class RecipeService {
 
+    static Recipe recipe1 = new Recipe("Fruit Salad", "Mix all the fruits",
+            new ArrayList<String>(Arrays.asList(new String[]{"apple", "orange"})));
+    static Recipe recipe2 = new Recipe("Chicken Fry", "Marinate the chicken and fry",
+            new ArrayList<String>(Arrays.asList(new String[]{"chicken"})));
+    static Recipe recipe3 = new Recipe("Potato Fry", "Roast the potato with spices",
+            new ArrayList<String>(Arrays.asList(new String[]{"potato"})));
+    static Recipe recipe4 = new Recipe("Apple Juice", "Blend the apple and strain",
+            new ArrayList<String>(Arrays.asList(new String[]{"apple"})));
+
+    static ArrayList<Recipe> recipesList = new ArrayList<>(Arrays.asList(recipe1,recipe2,recipe3,recipe4));
+
+
     // Get the ingredient list from the python script
     public ArrayList<String> getIngredientsFromPython(String imagePath) {
         ArrayList<String> ingredientList = new ArrayList<>();
@@ -41,14 +53,28 @@ public class RecipeService {
         } catch (Exception e) {
             System.err.println("Error while calling Python script: " + e.getMessage());
         }
-        System.out.println(ingredientList);
         return ingredientList;
     }
 
 
 
+    public static ArrayList<Recipe> findRecipesWithIngredients(ArrayList<String> availableIngredients) {
+        ArrayList<Recipe> matchingRecipes = new ArrayList<>();
+
+        for (Recipe recipe : recipesList) {
+            // Check if all availableIngredients are in the recipe's ingredients
+            if (recipe.getIngredients().containsAll(availableIngredients)) {
+                matchingRecipes.add(recipe);
+            }
+        }
+
+        return matchingRecipes;
+    }
 
 
-
-
+    public ArrayList<Recipe> findPossibleRecipes(String imagePath) {
+        ArrayList<String> availableIngredients = getIngredientsFromPython(imagePath);
+        ArrayList<Recipe> possibleRecipes = findRecipesWithIngredients(availableIngredients);
+        return possibleRecipes;
+    }
 }
