@@ -11,14 +11,21 @@ public class RecipeService {
 
     static Recipe recipe1 = new Recipe("Fruit Salad", "Mix all the fruits",
             new ArrayList<String>(Arrays.asList(new String[]{"apple", "orange"})));
-    static Recipe recipe2 = new Recipe("Chicken Fry", "Marinate the chicken and fry",
-            new ArrayList<String>(Arrays.asList(new String[]{"chicken"})));
-    static Recipe recipe3 = new Recipe("Potato Fry", "Roast the potato with spices",
+    static Recipe recipe2 = new Recipe("Fried Rice", "Marinate the chicken and fry",
+            new ArrayList<String>(Arrays.asList(new String[]{"rice", "chicken", "egg"})));
+    static Recipe recipe3 = new Recipe("French Fries", "Fry the potato and add salt",
             new ArrayList<String>(Arrays.asList(new String[]{"potato"})));
-    static Recipe recipe4 = new Recipe("Apple Juice", "Blend the apple and strain",
+    static Recipe recipe4 = new Recipe("Curd Rice", "Mix the curd and rice and add salt",
+            new ArrayList<String>(Arrays.asList(new String[]{"curd", "rice"})));
+    static Recipe recipe5 = new Recipe("Mango Yogurt", "Mix the curd, mango and sugar",
+            new ArrayList<String>(Arrays.asList(new String[]{"curd", "mango"})));
+    static Recipe recipe6 = new Recipe("Omelette", "Beat the egg and add chopped onion. Pour on pan",
+            new ArrayList<String>(Arrays.asList(new String[]{"egg", "onion"})));
+    static Recipe recipe7 = new Recipe("Apple Juice", "Blend the apple and strain",
             new ArrayList<String>(Arrays.asList(new String[]{"apple"})));
 
-    static ArrayList<Recipe> recipesList = new ArrayList<>(Arrays.asList(recipe1,recipe2,recipe3,recipe4));
+
+    static ArrayList<Recipe> recipesList = new ArrayList<>(Arrays.asList(recipe1,recipe2,recipe3,recipe4,recipe5,recipe6,recipe7));
 
 
     // Get the ingredient list from the python script
@@ -61,12 +68,10 @@ public class RecipeService {
     public static ArrayList<Recipe> findRecipesWithIngredients(ArrayList<String> availableIngredients) {
         ArrayList<Recipe> matchingRecipes = new ArrayList<>();
 
-        for (Recipe recipe : recipesList) {
-            // Check if all availableIngredients are in the recipe's ingredients
-            if (recipe.getIngredients().containsAll(availableIngredients)) {
+        for (Recipe recipe : recipesList)
+            // Check if all recipe's ingredients are in the availableIngredients
+            if (availableIngredients.containsAll(recipe.getIngredients()))
                 matchingRecipes.add(recipe);
-            }
-        }
 
         return matchingRecipes;
     }
