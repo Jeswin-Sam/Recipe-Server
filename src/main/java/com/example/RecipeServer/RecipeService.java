@@ -1,5 +1,6 @@
 package com.example.RecipeServer;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,7 +12,7 @@ public class RecipeService {
 
     static Recipe recipe1 = new Recipe("Fruit Salad", "Mix all the fruits",
             new ArrayList<String>(Arrays.asList(new String[]{"apple", "orange"})));
-    static Recipe recipe2 = new Recipe("Fried Rice", "Marinate the chicken and fry",
+    static Recipe recipe2 = new Recipe("Fried Rice", "Fried Rice Procedure",
             new ArrayList<String>(Arrays.asList(new String[]{"rice", "chicken", "egg"})));
     static Recipe recipe3 = new Recipe("French Fries", "Fry the potato and add salt",
             new ArrayList<String>(Arrays.asList(new String[]{"potato"})));
@@ -29,7 +30,7 @@ public class RecipeService {
 
 
     // Get the ingredient list from the python script
-    public ArrayList<String> getIngredientsFromPython(String imagePath) {
+    public static ArrayList<String> getIngredientsFromPython(String imagePath) {
         ArrayList<String> ingredientList = new ArrayList<>();
 
         String pythonScriptPath = "src/main/python/image_test.py";
@@ -64,7 +65,6 @@ public class RecipeService {
     }
 
 
-
     public static ArrayList<Recipe> findRecipesWithIngredients(ArrayList<String> availableIngredients) {
         ArrayList<Recipe> matchingRecipes = new ArrayList<>();
 
@@ -77,9 +77,15 @@ public class RecipeService {
     }
 
 
-    public ArrayList<Recipe> findPossibleRecipes(String imagePath) {
-        ArrayList<String> availableIngredients = getIngredientsFromPython(imagePath);
-        ArrayList<Recipe> possibleRecipes = findRecipesWithIngredients(availableIngredients);
-        return possibleRecipes;
+    public String getJSONResponse(String imagePath) {
+        JSONObject jsonObject = new JSONObject();
+
+        ArrayList<String> identifiedIngredients = getIngredientsFromPython(imagePath);
+        ArrayList<Recipe> possibleRecipes = findRecipesWithIngredients(identifiedIngredients);
+
+        jsonObject.put("Identified Ingredients", identifiedIngredients);
+        jsonObject.put("Possible Recipes", possibleRecipes);
+
+        return jsonObject.toString();
     }
 }
